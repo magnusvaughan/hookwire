@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Sequencer from './Sequencer'
 
 export default class App extends Component {
     render() {
@@ -7,13 +8,7 @@ export default class App extends Component {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-header">Hookwire</div>
-
-                            <div className="card-body">
-                                Making music.
-                            </div>
-                        </div>
+                        <Sequencer />
                     </div>
                 </div>
             </div>
