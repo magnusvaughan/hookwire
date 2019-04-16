@@ -61700,9 +61700,9 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -61723,14 +61723,33 @@ function (_Component) {
     _classCallCheck(this, Sequencer);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(Sequencer).call(this));
-    _this.state = {};
+    _this.togglePlaying = _this.togglePlaying.bind(_assertThisInitialized(_this));
+    _this.state = {
+      playing: false
+    };
     return _this;
   }
 
   _createClass(Sequencer, [{
     key: "componentDidMount",
-    value: function componentDidMount() {
-      this.updateTime();
+    value: function componentDidMount() {}
+  }, {
+    key: "togglePlaying",
+    value: function togglePlaying() {
+      console.log("toggleplaying");
+
+      if (this.state.playing) {
+        this.setState({
+          playing: false
+        });
+        tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.stop();
+      } else {
+        this.setState({
+          playing: true
+        });
+        tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.start('+0.0');
+        this.triggerSound();
+      }
     }
   }, {
     key: "updateTime",
@@ -61764,7 +61783,7 @@ function (_Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card-header"
       }, "Sequencer working"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        onClick: tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.toggle
+        onClick: this.togglePlaying
       }, "Sound")));
     }
   }]);

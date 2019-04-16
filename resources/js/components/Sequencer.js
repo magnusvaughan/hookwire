@@ -7,14 +7,28 @@ class Sequencer extends Component {
 
     constructor () {
         super()
+        this.togglePlaying = this.togglePlaying.bind(this);
         this.state = {
-
+            playing: false
         }
     }
 
     componentDidMount () {
-        this.updateTime()
+
     }
+
+    togglePlaying() {   
+        console.log("toggleplaying"); 
+        if (this.state.playing) {
+            this.setState({playing: false });
+            Tone.Transport.stop();
+        } else {
+            this.setState({ playing: true });
+            Tone.Transport.start('+0.0');
+            this.triggerSound();
+        }
+    }
+    
 
     updateTime() {
         this.setState({
@@ -43,7 +57,7 @@ class Sequencer extends Component {
 
                 <div className='card'>
                     <div className='card-header'>Sequencer working</div>
-                    <button onClick={Tone.Transport.toggle}>Sound</button>
+                    <button onClick={this.togglePlaying}>Sound</button>
                 </div>
             </div>
 
