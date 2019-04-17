@@ -61722,52 +61722,44 @@ function (_Component) {
 
     _classCallCheck(this, Sequencer);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Sequencer).call(this));
-    _this.togglePlaying = _this.togglePlaying.bind(_assertThisInitialized(_this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Sequencer).call(this)); //Set initial state
+
     _this.state = {
-      playing: false
+      bpm: 120,
+      transportTime: 0,
+      isPlaying: false //Initialise Tone
+
     };
+    tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.bpm.value = _this.state.bpm;
+    console.log('TONE.TRANSPORT.BPM.VALUE', tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.bpm.value); //Initialise component methods
+
+    _this.handleStartPlayback = _this.handleStartPlayback.bind(_assertThisInitialized(_this));
+    _this.handleStopPlayback = _this.handleStopPlayback.bind(_assertThisInitialized(_this));
     return _this;
   }
 
   _createClass(Sequencer, [{
     key: "componentDidMount",
-    value: function componentDidMount() {}
-  }, {
-    key: "togglePlaying",
-    value: function togglePlaying() {
-      console.log("toggleplaying");
-
-      if (this.state.playing) {
-        this.setState({
-          playing: false
-        });
-        tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.stop();
-      } else {
-        this.setState({
-          playing: true
-        });
-        tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.start('+0.0');
-        this.triggerSound();
-      }
-    }
-  }, {
-    key: "updateTime",
-    value: function updateTime() {
+    value: function componentDidMount() {
       this.setState({
-        transportTime: tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.seconds.toFixed(2)
+        transportTime: tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.seconds
       });
     }
   }, {
-    key: "triggerSound",
-    value: function triggerSound(event) {
-      //schedule a series of notes to play as soon as the page loads
-      synth.triggerAttackRelease('C4', '4n', '8n');
-      synth.triggerAttackRelease('E4', '8n', tone__WEBPACK_IMPORTED_MODULE_1___default.a.Time('4n') + tone__WEBPACK_IMPORTED_MODULE_1___default.a.Time('8n'));
-      synth.triggerAttackRelease('G4', '16n', '2n');
-      synth.triggerAttackRelease('B4', '16n', tone__WEBPACK_IMPORTED_MODULE_1___default.a.Time('2n') + tone__WEBPACK_IMPORTED_MODULE_1___default.a.Time('8t'));
-      synth.triggerAttackRelease('G4', '16', tone__WEBPACK_IMPORTED_MODULE_1___default.a.Time('2n') + tone__WEBPACK_IMPORTED_MODULE_1___default.a.Time('8t') * 2);
-      synth.triggerAttackRelease('E4', '2n', '0:3');
+    key: "handleStartPlayback",
+    value: function handleStartPlayback() {
+      this.setState({
+        isPlaying: true
+      });
+      tone__WEBPACK_IMPORTED_MODULE_1___default.a.Transport.start();
+    }
+  }, {
+    key: "handleStopPlayback",
+    value: function handleStopPlayback() {
+      this.setState({
+        isPlaying: false
+      });
+      tone__WEBPACK_IMPORTED_MODULE_1___default.a.transport.stop();
     }
   }, {
     key: "render",
@@ -61782,9 +61774,9 @@ function (_Component) {
         className: "card"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "card-header"
-      }, "Sequencer working"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-        onClick: this.togglePlaying
-      }, "Sound")));
+      }, "Sequencer working ", this.state.transportTime), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        onClick: this.handleStartPlayback
+      }, this.state.isPlaying ? 'Stop' : 'Play')));
     }
   }]);
 

@@ -7,43 +7,40 @@ class Sequencer extends Component {
 
     constructor () {
         super()
-        this.togglePlaying = this.togglePlaying.bind(this);
+        //Set initial state
         this.state = {
-            playing: false
+            bpm: 120,
+            transportTime: 0,
+            isPlaying: false
         }
+        //Initialise Tone
+        Tone.Transport.bpm.value = this.state.bpm;
+
+        console.log('TONE.TRANSPORT.BPM.VALUE', Tone.Transport.bpm.value);
+
+        //Initialise component methods
+        this.handleStartPlayback = this.handleStartPlayback.bind(this);
+        this.handleStopPlayback = this.handleStopPlayback.bind(this);
     }
 
     componentDidMount () {
-
-    }
-
-    togglePlaying() {   
-        console.log("toggleplaying"); 
-        if (this.state.playing) {
-            this.setState({playing: false });
-            Tone.Transport.stop();
-        } else {
-            this.setState({ playing: true });
-            Tone.Transport.start('+0.0');
-            this.triggerSound();
-        }
-    }
-    
-
-    updateTime() {
         this.setState({
-            transportTime: Tone.Transport.seconds.toFixed(2)
+            transportTime: Tone.Transport.seconds
         });
     }
 
-    triggerSound (event) {
-        //schedule a series of notes to play as soon as the page loads
-        synth.triggerAttackRelease('C4', '4n', '8n')
-        synth.triggerAttackRelease('E4', '8n', Tone.Time('4n') + Tone.Time('8n'))
-        synth.triggerAttackRelease('G4', '16n', '2n')
-        synth.triggerAttackRelease('B4', '16n', Tone.Time('2n') + Tone.Time('8t'))
-        synth.triggerAttackRelease('G4', '16', Tone.Time('2n') + Tone.Time('8t')*2)
-        synth.triggerAttackRelease('E4', '2n', '0:3')
+    handleStartPlayback() {
+        this.setState({
+            isPlaying: true
+        });
+        Tone.Transport.start(); 
+    }
+
+    handleStopPlayback() {
+        this.setState({
+            isPlaying: false
+        });
+        Tone.transport.stop(); 
     }
 
     render () {
@@ -56,8 +53,8 @@ class Sequencer extends Component {
                 </div>
 
                 <div className='card'>
-                    <div className='card-header'>Sequencer working</div>
-                    <button onClick={this.togglePlaying}>Sound</button>
+                    <div className='card-header'>Sequencer working {this.state.transportTime}</div>
+                    <button onClick={this.handleStartPlayback}>{this.state.isPlaying ?'Stop' : 'Play'}</button>
                 </div>
             </div>
 
